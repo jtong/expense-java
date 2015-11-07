@@ -101,4 +101,22 @@ public class PolicyResourceTest extends TestBase {
         assertThat((Long) policy.get("publishDate"), is(policy1.getDate().getTime()));
     }
     
+    @Test
+    public void should_get_current(){
+        when(policy1.getDate()).thenReturn(new Date());
+
+        int categoryId = 1;
+        when(expenseItemCategoryRepository.getCurrentPolicyByCategoryId(categoryId)).thenReturn(policy1);
+        Response response = target(basePath+"/current").request().get();
+
+        assertThat(response.getStatus(), is(200));
+        Map policy = response.readEntity(Map.class);
+
+        assertThat((String) policy.get("uri"), is(basePath+"/1"));
+        assertThat((String) policy.get("name"), is(policy1.getName()));
+        assertThat((Long) policy.get("publishDate"), is(policy1.getDate().getTime()));
+
+
+    }
+    
 }

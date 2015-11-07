@@ -25,4 +25,6 @@ public interface ExpenseItemCategoryRepository {
     Policy getPolicyById(int policyId);
 
     Policy updatePolicy(Policy policy);
+
+    Policy getCurrentPolicyByCategoryId(int categoryId);
 }

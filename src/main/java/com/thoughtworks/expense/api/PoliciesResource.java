@@ -49,6 +49,17 @@ public class PoliciesResource {
         
         return result;
     }
+    @Path("/current")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public Map getCurrent(@PathParam("expenseItemCategoryId") int expenseItemCategoryId){
+        Map result = new HashMap();
+        Policy instance = expenseItemCategoryRepository.getCurrentPolicyByCategoryId(expenseItemCategoryId);
+        result.put("uri", "/expenseItemCategories/" + expenseItemCategoryId + "/policies/" + instance.getId());
+        result.put("name", instance.getName());
+        result.put("publishDate", instance.getDate());
+        return result;
+    }
     
     @Path("/{policyId}")
     @GET
@@ -74,4 +85,6 @@ public class PoliciesResource {
         result.put("publishDate", instance.getDate());
         return result;
     }
+    
+
 }

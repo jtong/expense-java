@@ -9,7 +9,8 @@ public interface ExpenseItemCategoryRepository {
 
     ExpenseItemCategory createExpenseItemCategory(ExpenseItemCategory newInstance);
 
-    ExpenseItemCategory getCategoryById(int categoryId);
+    ExpenseItemCategory getExpenseItemCategoryById(int categoryId);
 
 
+    ExpenseItemCategory updateExpenseItemCategory(ExpenseItemCategory newInstance);
 }

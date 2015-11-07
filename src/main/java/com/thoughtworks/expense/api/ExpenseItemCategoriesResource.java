@@ -54,9 +54,25 @@ public class ExpenseItemCategoriesResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Map getById(@PathParam("expenseItemCategoryId") int expenseItemCategoryId){
         Map result = new HashMap();
-        ExpenseItemCategory instance = expenseItemCategoryRepository.getCategoryById(expenseItemCategoryId);
+        ExpenseItemCategory instance = expenseItemCategoryRepository.getExpenseItemCategoryById(expenseItemCategoryId);
         result.put("uri", "/expenseItemCategories/" + instance.getId());
         result.put("name", instance.getName());
+        return result;
+    }
+    
+    @Path("/{expenseItemCategoryId}")
+    @PUT
+    @Produces(MediaType.APPLICATION_JSON)
+    public Map update(@PathParam("expenseItemCategoryId") int expenseItemCategoryId){
+        Map result = new HashMap();
+        ExpenseItemCategory newInstance = expenseItemCategoryRepository.getExpenseItemCategoryById(expenseItemCategoryId);
+        
+        newInstance = expenseItemCategoryRepository.updateExpenseItemCategory(newInstance);
+        
+        result.put("uri", "/expenseItemCategories/" + newInstance.getId());
+        result.put("name", newInstance.getName());
+
+        
         return result;
     }
 }

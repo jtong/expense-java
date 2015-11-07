@@ -23,4 +23,6 @@ public interface ExpenseItemCategoryRepository {
     Policy createPolicy(Policy newInstance);
 
     Policy getPolicyById(int policyId);
+
+    Policy updatePolicy(Policy policy);
 }

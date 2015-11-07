@@ -258,7 +258,7 @@
                     publishDate: date
                     dueDate: date
       /{policy-id}
-        get: #~10
+        get: #~10| 8:22
           response:
             200:
               body:
@@ -269,7 +269,7 @@
                     rules: object[]
                     publishDate: date
                     dueDate: date
-        put: #~10
+        put: #~10| 4:53 rules没修改，参数没传
           body:
             application/x-www-form-urlencoded:
               formParams:

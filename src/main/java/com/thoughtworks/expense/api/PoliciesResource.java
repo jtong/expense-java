@@ -62,4 +62,16 @@ public class PoliciesResource {
         return result;
     }
     
+    @Path("/{policyId}")
+    @PUT
+    @Produces(MediaType.APPLICATION_JSON)
+    public Map update(@PathParam("expenseItemCategoryId") int expenseItemCategoryId, @PathParam("policyId") int policyId){
+        Map result = new HashMap();
+        Policy policy = expenseItemCategoryRepository.getPolicyById(policyId);
+        Policy instance = expenseItemCategoryRepository.updatePolicy(policy);
+        result.put("uri", "/expenseItemCategories/" + expenseItemCategoryId + "/policies/" + instance.getId());
+        result.put("name", instance.getName());
+        result.put("publishDate", instance.getDate());
+        return result;
+    }
 }

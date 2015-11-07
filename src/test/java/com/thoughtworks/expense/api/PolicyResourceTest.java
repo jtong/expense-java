@@ -82,6 +82,23 @@ public class PolicyResourceTest extends TestBase {
         assertThat((String) policy.get("uri"), is(basePath+"/1"));
         assertThat((String) policy.get("name"), is(policy1.getName()));
         assertThat((Long) policy.get("publishDate"), is(policy1.getDate().getTime()));
-        
     }
+    
+    @Test
+    public void should_update_policy(){
+        Form formData = new Form();
+        when(policy1.getDate()).thenReturn(new Date());
+        when(expenseItemCategoryRepository.updatePolicy(any(Policy.class))).thenReturn(policy1);
+
+        Response response = target(basePath+"/1").request().put(Entity.entity(formData, MediaType.APPLICATION_FORM_URLENCODED_TYPE));
+
+        assertThat(response.getStatus(), is(200));
+        
+        Map policy = response.readEntity(Map.class);
+
+        assertThat((String) policy.get("uri"), is(basePath+"/1"));
+        assertThat((String) policy.get("name"), is(policy1.getName()));
+        assertThat((Long) policy.get("publishDate"), is(policy1.getDate().getTime()));
+    }
+    
 }

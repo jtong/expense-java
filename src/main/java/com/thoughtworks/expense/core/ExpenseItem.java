@@ -6,4 +6,8 @@ public interface ExpenseItem {
     double getAmount();
 
     ExpenseItemCategory getCategory();
+
+    String getName();
+
+    void setName(String name);
 }

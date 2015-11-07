@@ -4,10 +4,7 @@ import com.thoughtworks.expense.core.ExpenseItem;
 import com.thoughtworks.expense.core.ExpenseItemCategory;
 import com.thoughtworks.expense.core.UserRepository;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -36,11 +33,26 @@ public class ExpenseItemsResource {
             if (category != null) {
                 Map categoryBean = new HashMap();
                 categoryBean.put("uri", "/expense-item-categories/" + category.getId());
-                expenseItemBean.put("category",categoryBean);
+                expenseItemBean.put("category", categoryBean);
             }
             result.add(expenseItemBean);
         }
         return result;
 
-    } 
+    }
+
+    @Path("/")
+    @POST
+    @Produces(MediaType.APPLICATION_JSON)
+    public Map create(@PathParam("expense-request-id") int requestId, @PathParam("userId") String userId,
+                        @FormParam("name") String name) {
+        HashMap result = new HashMap();
+        ExpenseItem expenseItem = userRepository.newExpenseItem();
+        expenseItem.setName(name);
+        expenseItem = userRepository.createExpenseItem(expenseItem);
+        result.put("uri", "/users/" + userId + "/expense-requests/" + requestId + "/expense-items/" + expenseItem.getId());
+        result.put("name", expenseItem.getName());
+        return result;
+
+    }
 }

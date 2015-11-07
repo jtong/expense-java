@@ -79,6 +79,37 @@ public class ExpenseRequestResource {
         result.put("requester", requester);
         return result;
     }
-    
-    
+
+
+
+    @Path("/{expense-request-id}")
+    @PUT
+    @Produces(MediaType.APPLICATION_JSON)
+    public Map getById(@PathParam("userId") int userId, @PathParam("expense-request-id") int expenseId,
+                        @FormParam("name") String name, @FormParam("approverId") int approverId,
+                        @FormParam("status") String status) {
+        ExpenseRequest expenseRequest = userRepository.getExpenseRequestsById(expenseId);
+        expenseRequest.setStatus(status);
+        expenseRequest.setName(name);
+        expenseRequest.setApprover(userRepository.getUserById(approverId));
+        expenseRequest = userRepository.updateExpenseRequest(expenseRequest);
+        HashMap result = new HashMap();
+        result.put("amount", expenseRequest.getAmount());
+        result.put("uri", "/users/" + userId + "/expense-requests/" + expenseRequest.getId());
+        Map requester = new HashMap();
+        requester.put("uri", "/users/" + userId);
+        result.put("requester", requester);
+        
+        if(expenseRequest.getApprover() != null){
+            Map approver = new HashMap();
+            approver.put("uri", "/users/"+ expenseRequest.getApprover().getId());
+            result.put("approver", approver);
+        }
+
+        result.put("status", expenseRequest.getStatus());
+        return result;
+    }
+
+
+
 }

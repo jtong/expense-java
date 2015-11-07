@@ -16,4 +16,12 @@ public interface ExpenseRequest {
     User getApprover();
 
     int getId();
+
+    String getStatus();
+
+    void setStatus(String status);
+
+    void setName(String name);
+
+    void setApprover(User userById);
 }

@@ -13,6 +13,7 @@ import javax.ws.rs.core.Application;
 import javax.ws.rs.core.Form;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.xml.ws.soap.MTOM;
 
 import java.util.*;
 
@@ -44,6 +45,7 @@ public class ExpenseResourceTest extends JerseyTest {
         when(expenseRequest2.getRequester()).thenReturn(user1);
         user2 = mock(User.class);
         when(user2.getName()).thenReturn("Tom");
+        when(user2.getId()).thenReturn(2);
         when(expenseRequest2.getApprover()).thenReturn(user2);
         
         List<ExpenseRequest> list = Arrays.asList(expenseRequest1, expenseRequest2);
@@ -51,6 +53,13 @@ public class ExpenseResourceTest extends JerseyTest {
         when(userRepository.getUserById(1)).thenReturn(user1);
         when(userRepository.newExpenseRequest(user1)).thenReturn(expenseRequest1);
         when(userRepository.getExpenseRequestsById(1)).thenReturn(expenseRequest1);
+        ExpenseRequest expenseRequest3 = mock(ExpenseRequest.class);
+        when(expenseRequest3.getRequestDate()).thenReturn(mockDate);
+        when(expenseRequest3.getRequester()).thenReturn(user1);
+        when(expenseRequest3.getId()).thenReturn(1);
+        when(expenseRequest3.getApprover()).thenReturn(user2);
+        when(expenseRequest3.getStatus()).thenReturn("APPROVED");
+        when(userRepository.updateExpenseRequest(expenseRequest1)).thenReturn(expenseRequest3);
         super.setUp();
     }
 
@@ -115,6 +124,28 @@ public class ExpenseResourceTest extends JerseyTest {
         assertThat((String) expenseRequest.get("uri"), is("/users/1/expense-requests/1"));
         assertThat((Integer) expenseRequest.get("amount"), is(0));
         Map requester = (Map) expenseRequest.get("requester");
-        assertThat((String) requester.get("uri"), is("/users/1"));    }
+        assertThat((String) requester.get("uri"), is("/users/1"));   
+    }
 
+    @Test
+    public void should_update_expense_request_by_id(){
+        Form formData = new Form();
+        formData.param("name", "expense-1");
+        formData.param("approverId", String.valueOf(user2.getId()));
+        formData.param("status", "APPROVED");
+        Response response = target("/users/1/expense-requests/1").request().put(Entity.entity(formData, MediaType.APPLICATION_FORM_URLENCODED_TYPE));
+        
+        assertThat(response.getStatus(), is(200));
+        Map expenseRequest = response.readEntity(Map.class);
+
+        assertThat((String) expenseRequest.get("uri"), is("/users/1/expense-requests/1"));
+        assertThat((Integer) expenseRequest.get("amount"), is(0));
+        Map requester = (Map) expenseRequest.get("requester");
+        assertThat((String) requester.get("uri"), is("/users/1"));
+        Map approver = (Map) expenseRequest.get("approver");
+        assertThat((String) approver.get("uri"), is("/users/2"));
+
+        assertThat((String) expenseRequest.get("status"), is("APPROVED"));
+                
+    }
 }

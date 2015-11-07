@@ -16,4 +16,6 @@ public interface UserRepository {
     ExpenseRequest newExpenseRequest(User user);
 
     ExpenseRequest getExpenseRequestsById(int expenseId);
+
+    ExpenseRequest updateExpenseRequest(ExpenseRequest expenseRequest);
 }

@@ -3,10 +3,7 @@ package com.thoughtworks.expense.api;
 import com.thoughtworks.expense.core.ExpenseItemCategoryRepository;
 import com.thoughtworks.expense.core.Policy;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -34,6 +31,34 @@ public class PoliciesResource {
             result.add(policyBean);
         }
 
+        return result;
+    }
+    
+    @Path("/")
+    @POST
+    @Produces(MediaType.APPLICATION_JSON)
+    public Map create(@PathParam("expenseItemCategoryId") int expenseItemCategoryId){
+        Map result = new HashMap();
+        Policy newInstance = expenseItemCategoryRepository.newPolicy();
+        
+        newInstance = expenseItemCategoryRepository.createPolicy(newInstance);
+        
+        result.put("uri","/expenseItemCategories/" + expenseItemCategoryId + "/policies/" + newInstance.getId() );
+        result.put("name", newInstance.getName());
+        result.put("publishDate", newInstance.getDate());
+        
+        return result;
+    }
+    
+    @Path("/{policyId}")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public Map getById(@PathParam("expenseItemCategoryId") int expenseItemCategoryId, @PathParam("policyId")int policyId){
+        Map result = new HashMap();
+        Policy instance = expenseItemCategoryRepository.getPolicyById(policyId);
+        result.put("uri", "/expenseItemCategories/" + expenseItemCategoryId + "/policies/" + instance.getId());
+        result.put("name", instance.getName());
+        result.put("publishDate", instance.getDate());
         return result;
     }
     

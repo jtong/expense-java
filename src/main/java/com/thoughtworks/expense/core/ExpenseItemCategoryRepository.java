@@ -17,4 +17,10 @@ public interface ExpenseItemCategoryRepository {
     ExpenseItemCategory updateExpenseItemCategory(ExpenseItemCategory newInstance);
 
     List<Policy> findPoliciesByCategoryId(int categoryId);
+
+    Policy newPolicy();
+
+    Policy createPolicy(Policy newInstance);
+
+    Policy getPolicyById(int policyId);
 }

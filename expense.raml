@@ -6,9 +6,9 @@
           application/json:
             type: object[]
               uri: string
-              id: string
+              id: number
               name: string
-  post: #~15
+  post: #~15| spike了20分钟才把参数传到后面……
     body:
       application/x-www-form-urlencoded:
         formParams:
@@ -19,7 +19,7 @@
           application/json:
             type: object
               uri: string
-              id: string
+              id: number
               name: string
   /{user-id}
     get: #~10

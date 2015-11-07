@@ -2,11 +2,10 @@ package com.thoughtworks.expense.api;
 
 import com.thoughtworks.expense.core.User;
 import com.thoughtworks.expense.core.UserRepository;
+import com.thoughtworks.expense.core.impl.UserImp;
 
 import javax.inject.Inject;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -36,4 +35,16 @@ public class UsersResource {
         return result;
     }
     
+    @Path("/")
+    @POST
+    @Produces(MediaType.APPLICATION_JSON)
+    public Map create(@FormParam("name") String name) {
+        User user = userRepository.newInstance(name);
+        HashMap<String, Object> result = new HashMap<>();
+        result.put("name", user.getName());
+        result.put("uri", "/users/"+user.getId());
+        result.put("id", user.getId());
+        return result;
+    }
+
 }

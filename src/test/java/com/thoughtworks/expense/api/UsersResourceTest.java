@@ -5,16 +5,24 @@ import com.thoughtworks.expense.core.UserRepository;
 import org.glassfish.hk2.utilities.binding.AbstractBinder;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.test.JerseyTest;
+import org.hamcrest.core.Is;
 import org.junit.Test;
 
+import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.Application;
+import javax.ws.rs.core.Form;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -29,6 +37,8 @@ public class UsersResourceTest extends JerseyTest {
         User user2 = mock(User.class);
         List<User> list = Arrays.asList(user1, user2);
         when(userRepository.list()).thenReturn(list);
+        when(userRepository.newInstance("James")).thenReturn(user1);
+        when(userRepository.create(user1)).thenReturn(user1);
         super.setUp();
     }
     
@@ -54,6 +64,21 @@ public class UsersResourceTest extends JerseyTest {
 
         assertThat(list.size(), is(2));
         Map user = (Map) list.get(0);
+        assertThat((String) user.get("uri"), is("/users/1"));
+        assertThat((String) user.get("name"), is("James"));
+        assertThat((Integer) user.get("id"), is(1));
+    }
+    
+    @Test
+    public void should_get_user_by_id() {
+        Form formData = new Form();
+        formData.param("name", "James");
+
+        Response response = target("/users").request().post(Entity.entity(formData, MediaType.APPLICATION_FORM_URLENCODED_TYPE));
+
+        assertThat(response.getStatus(), is(200));
+
+        Map user = response.readEntity(Map.class);
         assertThat((String) user.get("uri"), is("/users/1"));
         assertThat((String) user.get("name"), is("James"));
         assertThat((Integer) user.get("id"), is(1));

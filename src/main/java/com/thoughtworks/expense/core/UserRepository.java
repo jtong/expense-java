@@ -8,4 +8,6 @@ public interface UserRepository {
     User create(User user);
 
     User newInstance(String name);
+
+    User getUserById(int userId);
 }

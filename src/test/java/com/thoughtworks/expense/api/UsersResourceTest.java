@@ -39,6 +39,8 @@ public class UsersResourceTest extends JerseyTest {
         when(userRepository.list()).thenReturn(list);
         when(userRepository.newInstance("James")).thenReturn(user1);
         when(userRepository.create(user1)).thenReturn(user1);
+
+        when(userRepository.getUserById(1)).thenReturn(user1);
         super.setUp();
     }
     
@@ -70,7 +72,7 @@ public class UsersResourceTest extends JerseyTest {
     }
     
     @Test
-    public void should_get_user_by_id() {
+    public void should_create_user() {
         Form formData = new Form();
         formData.param("name", "James");
 
@@ -83,4 +85,17 @@ public class UsersResourceTest extends JerseyTest {
         assertThat((String) user.get("name"), is("James"));
         assertThat((Integer) user.get("id"), is(1));
     }
+    
+    @Test
+    public void should_get_user_by_id(){
+        Response response = target("/users/1").request().get();
+
+        assertThat(response.getStatus(), is(200));
+        Map user = response.readEntity(Map.class);
+        assertThat((String) user.get("uri"), is("/users/1"));
+        assertThat((String) user.get("name"), is("James"));
+        assertThat((Integer) user.get("id"), is(1));
+        
+    }
+    
 }

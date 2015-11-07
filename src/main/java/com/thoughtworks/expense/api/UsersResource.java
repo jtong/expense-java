@@ -47,4 +47,16 @@ public class UsersResource {
         return result;
     }
 
+    @Path("/{userId}")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public Map getById(@PathParam("userId") int userId) {
+        User theUser = userRepository.getUserById(userId);
+        Map result = new HashMap();
+        result.put("uri", "/users/" + userId);
+        result.put("name", theUser.getName());
+        result.put("id", theUser.getId());
+        return result;
+    }
+    
 }

@@ -7,6 +7,7 @@ import com.thoughtworks.expense.core.impl.UserImp;
 import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -58,5 +59,11 @@ public class UsersResource {
         result.put("id", theUser.getId());
         return result;
     }
-    
+
+
+    @Path("/{userId}/expense-requests")
+    public ExpenseRequestResource expenseRequests() {
+        return new ExpenseRequestResource(userRepository);
+
+    }
 }

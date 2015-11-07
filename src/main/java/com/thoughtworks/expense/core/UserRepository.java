@@ -10,4 +10,6 @@ public interface UserRepository {
     User newInstance(String name);
 
     User getUserById(int userId);
+
+    List<ExpenseRequest> findExpenseRequestsByUserId(int userId);
 }

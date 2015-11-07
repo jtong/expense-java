@@ -22,7 +22,7 @@
               id: number
               name: string
   /{user-id}
-    get: #~10|
+    get: #~10|6:03
       response:
         200:
           body:
@@ -31,34 +31,34 @@
                 uri: string
                 id: string
     /expense-requests
-      get: #~10
+      get: #~10| 33 mock太难写， 大量的时间在写mock
         response:
           200:
             body:
               application/json:
                 type: object[]
                   uri: string
-                  requestor: object
+                  requester: object
                     uri: string
                     name: string
                   approver: object
                     uri: string
                     name: string
                   amount: number
-                  items: object[]
-      post: #~10
+                  requestDate: date
+      post: #~10|
         body:
           application/x-www-form-urlencoded:
             formParams:
               name: string
-              requestorId: string
+              requesterId: string
         response:
           200:
             body:
               application/json:
                 type: object
                   uri: string
-                  requestor: object
+                  requester: object
                     uri: string
                     name: string
                   amount: number
@@ -70,7 +70,7 @@
                 application/json:
                   type: object
                     uri: string
-                    requestor: object
+                    requester: object
                       uri: string
                       name: string
                     approver: object
@@ -93,7 +93,7 @@
                 application/json:
                   type: object
                     uri: string
-                    requestor: object
+                    requester: object
                       uri: string
                       name: string
                     approver: object

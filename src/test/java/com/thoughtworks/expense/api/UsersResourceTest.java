@@ -27,7 +27,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 public class UsersResourceTest extends JerseyTest {
-    public UserRepository userRepository = mock(UserRepository.class);
+    protected UserRepository userRepository = mock(UserRepository.class);
 
     @Override
     public void setUp() throws Exception {
@@ -78,7 +78,7 @@ public class UsersResourceTest extends JerseyTest {
 
         Response response = target("/users").request().post(Entity.entity(formData, MediaType.APPLICATION_FORM_URLENCODED_TYPE));
 
-        assertThat(response.getStatus(), is(200));
+        assertThat(response.getStatus(), is(200));//TODO: 201
 
         Map user = response.readEntity(Map.class);
         assertThat((String) user.get("uri"), is("/users/1"));

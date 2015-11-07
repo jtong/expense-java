@@ -21,9 +21,10 @@ public interface UserRepository {
 
     List<ExpenseItem> findExpenseItemsByRequestId(int requestId);
 
-    ExpenseItem getItemById(int itemId);
+    ExpenseItem getExpenseItemById(int itemId);
 
     ExpenseItem newExpenseItem();
 
     ExpenseItem createExpenseItem(ExpenseItem expenseItem);
+
 }

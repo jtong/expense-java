@@ -103,7 +103,7 @@
                     dateRequested: date
                     dateApproved: date
         /expense-items
-          get: #~10
+          get: #~10| 24, 修BUG4分钟，6分钟写mock，第一个访问 2分钟，
             response:
               200:
                 body:
@@ -116,7 +116,7 @@
                         name: string
                         comment: string
 
-          post: #~10
+          post: #~10| 13:26 其中2分钟写第一个测试，只为了测url存在（所以必须模板化），
             body:
               application/x-www-form-urlencoded:
                 formParams:
@@ -135,7 +135,7 @@
                         name: string
                       comment: string
           /{expense-items-id}
-            get: #~10
+            get: #~10| 6:43
               response:
                 200:
                   body:
@@ -190,7 +190,7 @@
                       amount: number
 
 /expense-item-categories
-  get: #~10| 24, 修BUG4分钟，6分钟写mock，第一个访问 2分钟，
+  get: #~10
     resposne:
       200:
         body:
@@ -198,7 +198,7 @@
             type: object[]
               uri: string
               name: string
-  post: #~10| 13:26 其中2分钟写第一个测试，只为了测url存在（所以必须模板化）
+  post: #~10
     body:
       application/x-www-form-urlencoded:
         formParams:

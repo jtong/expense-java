@@ -2,14 +2,9 @@ package com.thoughtworks.expense.api;
 
 import com.thoughtworks.expense.core.ExpenseItem;
 import com.thoughtworks.expense.core.ExpenseItemCategory;
-import com.thoughtworks.expense.core.UserRepository;
-import org.glassfish.hk2.utilities.binding.AbstractBinder;
-import org.glassfish.jersey.server.ResourceConfig;
-import org.glassfish.jersey.test.JerseyTest;
 import org.junit.Test;
 
 import javax.ws.rs.client.Entity;
-import javax.ws.rs.core.Application;
 import javax.ws.rs.core.Form;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -42,9 +37,11 @@ public class ExpenseItemsResourceTest extends TestBase {
         when(userRepository.findExpenseItemsByRequestId(1)).thenReturn(Arrays.asList(expenseItem));
 
         
-        when(userRepository.getItemById(1)).thenReturn(expenseItem);
+        when(userRepository.getExpenseItemById(1)).thenReturn(expenseItem);
         when(userRepository.newExpenseItem()).thenReturn(mock(ExpenseItem.class));
         when(userRepository.createExpenseItem(any(ExpenseItem.class))).thenReturn(expenseItem);
+        
+
         super.setUp();
     }
 
@@ -84,6 +81,20 @@ public class ExpenseItemsResourceTest extends TestBase {
 
         assertThat((String) item.get("name"), is(itemName));
         assertThat((String) item.get("uri"), is(basePath+"/1"));
+        
     }
 
+    @Test
+    public void should_get_item_by_id() {
+        Response response = target(basePath+"/1").request().get();
+        
+        assertThat(response.getStatus(), is(200));
+        Map item = response.readEntity(Map.class);
+
+        assertThat((String) item.get("uri"), is(basePath+"/1"));
+
+        assertThat((Double) item.get("amount"), is(200.00));
+        Map category = (Map) item.get("category");
+        assertThat((String) category.get("uri"), is("/expense-item-categories/1"));
+    }
 }

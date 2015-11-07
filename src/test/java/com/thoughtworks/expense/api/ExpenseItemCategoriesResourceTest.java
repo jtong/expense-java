@@ -94,6 +94,8 @@ public class ExpenseItemCategoriesResourceTest extends TestBase {
         Map category = response.readEntity(Map.class);
 
         assertThat((String) category.get("uri"), is(basePath + "/1"));
-        assertThat((String) category.get("name"), is("categoryName"));    }
+        assertThat((String) category.get("name"), is("categoryName"));   
+    }
 
+    
 }

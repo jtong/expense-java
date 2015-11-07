@@ -1,5 +1,7 @@
 package com.thoughtworks.expense.core;
 
+import javafx.beans.value.ObservableBooleanValue;
+
 import java.util.List;
 
 public interface ExpenseItemCategoryRepository {
@@ -13,4 +15,6 @@ public interface ExpenseItemCategoryRepository {
 
 
     ExpenseItemCategory updateExpenseItemCategory(ExpenseItemCategory newInstance);
+
+    List<Policy> findPoliciesByCategoryId(int categoryId);
 }

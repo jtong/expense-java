@@ -75,4 +75,9 @@ public class ExpenseItemCategoriesResource {
         
         return result;
     }
+
+    @Path("/{expenseItemCategoryId}/policies")
+    public  PoliciesResource getPoliciesResource(){
+        return new PoliciesResource(expenseItemCategoryRepository);
+    }
 }

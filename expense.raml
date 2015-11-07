@@ -220,7 +220,7 @@
                 type: object
                   uri: string
                   name: string
-      put: #~10| 5
+      put: #~10| 5 不用思考提交的参数真的很快，但是这似乎不正确
         body:
           application/x-www-form-urlencoded:
             formParams:
@@ -233,7 +233,7 @@
                   uri: string
                   name: string
     /policies
-        get: #~10
+        get: #~10| 17:52 新测试居然用了8分钟
           response:
             200:
               body:

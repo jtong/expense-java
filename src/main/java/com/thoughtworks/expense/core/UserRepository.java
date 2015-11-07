@@ -1,5 +1,7 @@
 package com.thoughtworks.expense.core;
 
+import com.thoughtworks.expense.api.Payment;
+
 import java.util.List;
 
 public interface UserRepository {
@@ -28,4 +30,6 @@ public interface UserRepository {
     ExpenseItem createExpenseItem(ExpenseItem expenseItem);
 
     ExpenseItem updateExpenseItem(ExpenseItem newInstance);
+
+    Payment getPaymentByRequestId(int expenseRequestId);
 }

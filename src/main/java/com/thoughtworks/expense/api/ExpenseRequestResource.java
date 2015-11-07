@@ -117,4 +117,11 @@ public class ExpenseRequestResource {
         return new ExpenseItemsResource(userRepository);
 
     }
+
+    @Path("/{expense-request-id}/payment")
+    @Produces(MediaType.APPLICATION_JSON)
+    public PaymentResource getPayment() {
+        return new PaymentResource(userRepository);
+
+    }
 }

@@ -26,8 +26,7 @@ import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class UsersResourceTest extends JerseyTest {
-    protected UserRepository userRepository = mock(UserRepository.class);
+public class UsersResourceTest extends TestBase {
 
     @Override
     public void setUp() throws Exception {
@@ -44,17 +43,6 @@ public class UsersResourceTest extends JerseyTest {
         super.setUp();
     }
     
-    @Override
-    protected Application configure() {
-        return new ResourceConfig().register(new AbstractBinder() {
-
-
-            @Override
-            protected void configure() {
-                bind(userRepository).to(UserRepository.class);
-            }
-        }).packages("com.thoughtworks.expense");
-    }
 
     @Test
     public void should_list_all_users(){

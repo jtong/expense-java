@@ -12,4 +12,8 @@ public interface UserRepository {
     User getUserById(int userId);
 
     List<ExpenseRequest> findExpenseRequestsByUserId(int userId);
+
+    ExpenseRequest newExpenseRequest(User user);
+
+    ExpenseRequest getExpenseRequestsById(int expenseId);
 }

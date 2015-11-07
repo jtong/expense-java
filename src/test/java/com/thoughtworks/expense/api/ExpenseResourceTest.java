@@ -8,7 +8,10 @@ import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.test.JerseyTest;
 import org.junit.Test;
 
+import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.Application;
+import javax.ws.rs.core.Form;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import java.util.*;
@@ -21,10 +24,12 @@ import static org.mockito.Mockito.when;
 public class ExpenseResourceTest extends JerseyTest {
     protected UserRepository userRepository = mock(UserRepository.class);
     private Date mockDate;
+    private User user1;
+    private User user2;
 
     @Override
     public void setUp() throws Exception {
-        User user1 = mock(User.class);
+        user1 = mock(User.class);
         when(user1.getName()).thenReturn("James");
         Calendar instance = Calendar.getInstance();
         instance.set(2015, 11, 7);
@@ -37,12 +42,15 @@ public class ExpenseResourceTest extends JerseyTest {
         ExpenseRequest expenseRequest2 = mock(ExpenseRequest.class);
         when(expenseRequest2.getRequestDate()).thenReturn(mockDate);
         when(expenseRequest2.getRequester()).thenReturn(user1);
-        User user2 = mock(User.class);
+        user2 = mock(User.class);
         when(user2.getName()).thenReturn("Tom");
         when(expenseRequest2.getApprover()).thenReturn(user2);
         
         List<ExpenseRequest> list = Arrays.asList(expenseRequest1, expenseRequest2);
         when(userRepository.findExpenseRequestsByUserId(1)).thenReturn(list);
+        when(userRepository.getUserById(1)).thenReturn(user1);
+        when(userRepository.newExpenseRequest(user1)).thenReturn(expenseRequest1);
+        when(userRepository.getExpenseRequestsById(1)).thenReturn(expenseRequest1);
         super.setUp();
     }
 
@@ -76,6 +84,37 @@ public class ExpenseResourceTest extends JerseyTest {
         assertThat((String) ((Map)expense1.get("requester")).get("name"), is("James"));
         assertThat((String)((Map)expense2.get("approver")).get("name"), is("Tom"));
     }
+    
+    @Test
+    public void should_create_expense_request() {
 
+        Form formData = new Form();
+        formData.param("name", "expense-1");
+        formData.param("requestId", String.valueOf(user2.getId()));
+        Response response = target("/users/1/expense-requests").request().post(Entity.entity(formData, MediaType.APPLICATION_FORM_URLENCODED_TYPE));
+
+        assertThat(response.getStatus(), is(200));
+
+        Map expenseRequest = response.readEntity(Map.class);
+
+        assertThat((String) expenseRequest.get("uri"), is("/users/1/expense-requests/1"));
+        assertThat((Integer) expenseRequest.get("amount"), is(0));
+        Map requester = (Map) expenseRequest.get("requester");
+        assertThat((String) requester.get("uri"), is("/users/1"));
+
+    }
+    
+    @Test
+    public void should_get_expense_by_id(){
+        Response response = target("/users/1/expense-requests/1").request().get();
+
+        assertThat(response.getStatus(), is(200));
+
+        Map expenseRequest = response.readEntity(Map.class);
+
+        assertThat((String) expenseRequest.get("uri"), is("/users/1/expense-requests/1"));
+        assertThat((Integer) expenseRequest.get("amount"), is(0));
+        Map requester = (Map) expenseRequest.get("requester");
+        assertThat((String) requester.get("uri"), is("/users/1"));    }
 
 }

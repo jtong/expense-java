@@ -1,12 +1,10 @@
 package com.thoughtworks.expense.api;
 
 import com.thoughtworks.expense.core.ExpenseRequest;
+import com.thoughtworks.expense.core.User;
 import com.thoughtworks.expense.core.UserRepository;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.ArrayList;
@@ -50,4 +48,37 @@ public class ExpenseRequestResource {
         
         return result;
     }
+
+    @Path("/")
+    @POST
+    @Produces(MediaType.APPLICATION_JSON)
+    public Map getById(@PathParam("userId") int userId) {
+        User user = userRepository.getUserById(userId);
+        ExpenseRequest expenseRequest = userRepository.newExpenseRequest(user);
+
+        HashMap result = new HashMap();
+        result.put("amount", expenseRequest.getAmount());
+        result.put("uri", "/users/" + userId + "/expense-requests/" + expenseRequest.getId());
+        Map requester = new HashMap();
+        requester.put("uri", "/users/" + userId);
+        result.put("requester", requester);
+        return result;
+    }
+
+    @Path("/{expense-request-id}")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public Map getById(@PathParam("userId") int userId, @PathParam("expense-request-id") int expenseId) {
+        ExpenseRequest expenseRequest = userRepository.getExpenseRequestsById(expenseId);
+        
+        HashMap result = new HashMap();
+        result.put("amount", expenseRequest.getAmount());
+        result.put("uri", "/users/" + userId + "/expense-requests/" + expenseRequest.getId());
+        Map requester = new HashMap();
+        requester.put("uri", "/users/" + userId);
+        result.put("requester", requester);
+        return result;
+    }
+    
+    
 }

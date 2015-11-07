@@ -64,6 +64,7 @@ public class UsersResource {
     @Path("/{userId}/expense-requests")
     public ExpenseRequestResource expenseRequests() {
         return new ExpenseRequestResource(userRepository);
-
     }
+    
+    
 }

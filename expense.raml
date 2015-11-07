@@ -46,12 +46,11 @@
                     name: string
                   amount: number
                   requestDate: date
-      post: #~10|
+      post: #~10|13:09 没有按照标准的TDD的思路来写，所以速度莫名的慢了
         body:
           application/x-www-form-urlencoded:
             formParams:
               name: string
-              requesterId: string
         response:
           200:
             body:
@@ -63,7 +62,7 @@
                     name: string
                   amount: number
       /{expense-request-id}
-        get: #~10
+        get: #~10| 6:13 只写了接口，JSON里的很多数据都没填
           response:
             200:
               body:

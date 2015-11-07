@@ -8,4 +8,8 @@ public interface ExpenseItemCategoryRepository {
     ExpenseItemCategory newExpenseItemCategory();
 
     ExpenseItemCategory createExpenseItemCategory(ExpenseItemCategory newInstance);
+
+    ExpenseItemCategory getCategoryById(int categoryId);
+
+
 }

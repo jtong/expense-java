@@ -198,7 +198,7 @@
             type: object[]
               uri: string
               name: string
-  post: #~10
+  post: #~10| 6:36 模板还是起作用了
     body:
       application/x-www-form-urlencoded:
         formParams:
@@ -212,12 +212,12 @@
               id: string
               name: string
   /{expense-item-category-id}
-      get: #~10
+      get: #~10| 4:20 还算快，主要是参数简单
         resposne:
           200:
             body:
               application/json:
-                type: object[]
+                type: object
                   uri: string
                   name: string
       put: #~10
@@ -229,7 +229,7 @@
           200:
             body:
               application/json:
-                type: object[]
+                type: object
                   uri: string
                   name: string
     /policies
@@ -238,7 +238,7 @@
             200:
               body:
                 application/json:
-                  type: object
+                  type: object[]
                     uri: string
                     name: string
         post: #~10

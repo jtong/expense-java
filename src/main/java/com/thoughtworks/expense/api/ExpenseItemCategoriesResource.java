@@ -4,10 +4,7 @@ import com.thoughtworks.expense.core.ExpenseItemCategory;
 import com.thoughtworks.expense.core.ExpenseItemCategoryRepository;
 
 import javax.inject.Inject;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -49,6 +46,17 @@ public class ExpenseItemCategoriesResource {
         result.put("name",newInstance.getName());
 
 
+        return result;
+    }
+    
+    @Path("/{expenseItemCategoryId}")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public Map getById(@PathParam("expenseItemCategoryId") int expenseItemCategoryId){
+        Map result = new HashMap();
+        ExpenseItemCategory instance = expenseItemCategoryRepository.getCategoryById(expenseItemCategoryId);
+        result.put("uri", "/expenseItemCategories/" + instance.getId());
+        result.put("name", instance.getName());
         return result;
     }
 }

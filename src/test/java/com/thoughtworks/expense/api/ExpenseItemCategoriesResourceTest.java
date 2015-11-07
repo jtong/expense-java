@@ -67,5 +67,18 @@ public class ExpenseItemCategoriesResourceTest extends TestBase {
         assertThat((String) category.get("name"), is("categoryName"));
         assertThat((Integer) category.get("id"), is(category1.getId()));
     }
+    
+    @Test
+    public void should_get_by_id() {
+        when(expenseItemCategoryRepository.getCategoryById(1)).thenReturn(category1);
+        Response response = target(basePath + "/1").request().get();
+
+        assertThat(response.getStatus(), is(200));
+
+        Map category = response.readEntity(Map.class);
+
+        assertThat((String) category.get("uri"), is(basePath + "/1"));
+        assertThat((String) category.get("name"), is("categoryName"));
+    }
 
 }

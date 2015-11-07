@@ -10,4 +10,6 @@ public interface ExpenseItem {
     String getName();
 
     void setName(String name);
+
+    String getComment();
 }

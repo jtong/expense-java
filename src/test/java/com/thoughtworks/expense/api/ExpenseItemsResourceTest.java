@@ -24,6 +24,7 @@ public class ExpenseItemsResourceTest extends TestBase {
     private final int requestId = 1;
     private String basePath;
     private ExpenseItem expenseItem;
+    private ExpenseItemCategory expenseItemCategory;
 
     @Override
     public void setUp() throws Exception {
@@ -31,7 +32,7 @@ public class ExpenseItemsResourceTest extends TestBase {
         expenseItem = mock(ExpenseItem.class);
         when(expenseItem.getId()).thenReturn(requestId);
         when(expenseItem.getAmount()).thenReturn(200.0);
-        ExpenseItemCategory expenseItemCategory = mock(ExpenseItemCategory.class);
+        expenseItemCategory = mock(ExpenseItemCategory.class);
         when(expenseItemCategory.getId()).thenReturn(1);
         when(expenseItem.getCategory()).thenReturn(expenseItemCategory);
         when(userRepository.findExpenseItemsByRequestId(1)).thenReturn(Arrays.asList(expenseItem));
@@ -96,5 +97,31 @@ public class ExpenseItemsResourceTest extends TestBase {
         assertThat((Double) item.get("amount"), is(200.00));
         Map category = (Map) item.get("category");
         assertThat((String) category.get("uri"), is("/expense-item-categories/1"));
+    }
+    
+    @Test
+    public void should_update_item_by_id(){
+        Form formData = new Form();
+        formData.param("amount", String.valueOf(201.00));
+        formData.param("categoryId", String.valueOf(1));
+        formData.param("comment", "comment-1");
+        ExpenseItem itemUpdated = mock(ExpenseItem.class);
+        when(itemUpdated.getId()).thenReturn(1);
+        when(itemUpdated.getAmount()).thenReturn(201.00);
+        when(itemUpdated.getCategory()).thenReturn(expenseItemCategory);
+        when(itemUpdated.getComment()).thenReturn("comment-1");
+        when(userRepository.updateExpenseItem(any(ExpenseItem.class))).thenReturn(itemUpdated);
+        Response response = target(basePath+"/1").request().put(Entity.entity(formData, MediaType.APPLICATION_FORM_URLENCODED_TYPE));
+
+        assertThat(response.getStatus(), is(200));
+        
+        Map item = response.readEntity(Map.class);
+
+        assertThat((String) item.get("uri"), is(basePath+"/1"));
+
+        assertThat((Double) item.get("amount"), is(201.00));
+        Map category = (Map) item.get("category");
+        assertThat((String) category.get("uri"), is("/expense-item-categories/1"));
+        assertThat((String) item.get("comment"), is("comment-1"));
     }
 }

@@ -27,4 +27,5 @@ public interface UserRepository {
 
     ExpenseItem createExpenseItem(ExpenseItem expenseItem);
 
+    ExpenseItem updateExpenseItem(ExpenseItem newInstance);
 }

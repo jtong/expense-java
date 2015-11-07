@@ -61,6 +61,7 @@ public class PaymentResourceTest extends TestBase {
         assertThat((Double) payment.get("amount"), is(1000.00));
         assertThat((String) payment.get("account"), is("some account"));
 
-
     }
+    
+    
 }

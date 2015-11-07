@@ -1,5 +1,6 @@
 package com.thoughtworks.expense.api;
 
+import com.thoughtworks.expense.core.ExpenseItemCategoryRepository;
 import com.thoughtworks.expense.core.UserRepository;
 import org.glassfish.hk2.utilities.binding.AbstractBinder;
 import org.glassfish.jersey.server.ResourceConfig;
@@ -11,7 +12,7 @@ import static org.mockito.Mockito.mock;
 
 public class TestBase extends JerseyTest {
     protected UserRepository userRepository = mock(UserRepository.class);
-
+    protected ExpenseItemCategoryRepository expenseItemCategoryRepository = mock(ExpenseItemCategoryRepository.class);
     @Override
     protected Application configure() {
         return new ResourceConfig().register(new AbstractBinder() {
@@ -21,6 +22,7 @@ public class TestBase extends JerseyTest {
             protected void configure() {
 
                 bind(userRepository).to(UserRepository.class);
+                bind(expenseItemCategoryRepository).to(ExpenseItemCategoryRepository.class);
             }
         }).packages("com.thoughtworks.expense");
     }

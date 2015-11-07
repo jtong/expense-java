@@ -18,4 +18,6 @@ public interface UserRepository {
     ExpenseRequest getExpenseRequestsById(int expenseId);
 
     ExpenseRequest updateExpenseRequest(ExpenseRequest expenseRequest);
+
+    List<ExpenseItem> findExpenseItemsByRequestId(int requestId);
 }

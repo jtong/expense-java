@@ -111,5 +111,10 @@ public class ExpenseRequestResource {
     }
 
 
+    @Path("/{expense-request-id}/expense-items")
+    @Produces(MediaType.APPLICATION_JSON)
+    public ExpenseItemsResource getExpenseItemResource() {
+        return new ExpenseItemsResource(userRepository);
 
+    }
 }

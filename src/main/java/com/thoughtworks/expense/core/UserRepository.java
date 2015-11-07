@@ -32,4 +32,8 @@ public interface UserRepository {
     ExpenseItem updateExpenseItem(ExpenseItem newInstance);
 
     Payment getPaymentByRequestId(int expenseRequestId);
+
+    Payment newPayment(int expenseRequestId);
+
+    Payment createPayment(Payment newInstance);
 }

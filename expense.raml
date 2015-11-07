@@ -166,7 +166,7 @@
                           name: string
                         comment: string
         /payment
-          get: #~10
+          get: #~10| 13:54 因为不是典型的list，所以做的有点慢
             response:
               200:
                 body:
@@ -175,7 +175,7 @@
                       uri: string
                       account: string
                       amount: number
-          post: #~10
+          post: #~10|
             body:
               application/x-www-form-urlencoded:
                 formParams:

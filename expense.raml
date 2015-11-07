@@ -1,0 +1,301 @@
+/users
+  get: #~15|40，主要问题在于想小步走，只mock，没写when，想先跑通，却把实现写了，结果因此报了一个特别奇怪的错误。还是要严格按步骤走，先空数据的状态码，然后再加入逻辑
+    reponse:
+      200:
+        body:
+          application/json:
+            type: object[]
+              uri: string
+              id: string
+              name: string
+  post: #~15
+    body:
+      application/x-www-form-urlencoded:
+        formParams:
+          name: string
+    reponse:
+      200:
+        body:
+          application/json:
+            type: object
+              uri: string
+              id: string
+              name: string
+  /{user-id}
+    get: #~10
+      response:
+        200:
+          body:
+            application/json:
+              type: object
+                uri: string
+                id: string
+    /expense-requests
+      get: #~10
+        response:
+          200:
+            body:
+              application/json:
+                type: object[]
+                  uri: string
+                  requestor: object
+                    uri: string
+                    name: string
+                  approver: object
+                    uri: string
+                    name: string
+                  amount: number
+                  items: object[]
+      post: #~10
+        body:
+          application/x-www-form-urlencoded:
+            formParams:
+              name: string
+              requestorId: string
+        response:
+          200:
+            body:
+              application/json:
+                type: object
+                  uri: string
+                  requestor: object
+                    uri: string
+                    name: string
+                  amount: number
+      /{expense-request-id}
+        get: #~10
+          response:
+            200:
+              body:
+                application/json:
+                  type: object
+                    uri: string
+                    requestor: object
+                      uri: string
+                      name: string
+                    approver: object
+                      uri: string
+                      name: string
+                    amount: number
+                    status: string
+                    dateRequested: date
+                    dateApproved: date
+        put: #~10
+          body:
+            application/x-www-form-urlencoded:
+              formParams:
+                name: string
+                approverId: string
+                status: string
+          response:
+            200:
+              body:
+                application/json:
+                  type: object
+                    uri: string
+                    requestor: object
+                      uri: string
+                      name: string
+                    approver: object
+                      uri: string
+                      name: string
+                    amount: number
+                    status: string
+                    dateRequested: date
+                    dateApproved: date
+        /expense-items
+          get: #~10
+            response:
+              200:
+                body:
+                  application/json:
+                    type: object[]
+                      uri: string
+                      amount: number
+                      category: object
+                        uri: string
+                        name: string
+                        comment: string
+
+          post: #~10
+            body:
+              application/x-www-form-urlencoded:
+                formParams:
+                  amount: number
+                  categoryId: string
+                  comment: string
+            response:
+              200:
+                body:
+                  application/json:
+                    type: object
+                      uri: string
+                      amount: number
+                      category: object
+                        uri: string
+                        name: string
+                      comment: string
+          /{expense-items-id}
+            get: #~10
+              response:
+                200:
+                  body:
+                    application/json:
+                      type: object
+                        uri: string
+                        amount: number
+                        category: object
+                          uri: string
+                          name: string
+                        comment: string
+            put: #~10
+              body:
+                application/x-www-form-urlencoded:
+                  formParams:
+                    amount: number
+                    categoryId: string
+                    comment: string
+              response:
+                200:
+                  body:
+                    application/json:
+                      type: object
+                        uri: string
+                        amount: number
+                        category: object
+                          uri: string
+                          name: string
+                        comment: string
+        /payment
+          get: #~10
+            response:
+              200:
+                body:
+                  application/json:
+                    type: object
+                      uri: string
+                      account: string
+                      amount: number
+          post: #~10
+            body:
+              application/x-www-form-urlencoded:
+                formParams:
+                  account: string
+            response:
+              200:
+                body:
+                  application/json:
+                    type: object
+                      uri: string
+                      account: string
+                      amount: number
+
+/expense-item-categories
+  get: #~10
+    resposne:
+      200:
+        body:
+          application/json:
+            type: object[]
+              uri: string
+              name: string
+  post: #~10
+    body:
+      application/x-www-form-urlencoded:
+        formParams:
+          name: string
+    resposne:
+      200:
+        body:
+          application/json:
+            type: object
+              uri: string
+              id: string
+              name: string
+  /{expense-item-category-id}
+      get: #~10
+        resposne:
+          200:
+            body:
+              application/json:
+                type: object[]
+                  uri: string
+                  name: string
+      put: #~10
+        body:
+          application/x-www-form-urlencoded:
+            formParams:
+              name: string
+        response:
+          200:
+            body:
+              application/json:
+                type: object[]
+                  uri: string
+                  name: string
+    /policies
+        get: #~10
+          response:
+            200:
+              body:
+                application/json:
+                  type: object
+                    uri: string
+                    name: string
+        post: #~10
+          body:
+            application/x-www-form-urlencoded:
+              formParams:
+                name: string
+                rules: object[]
+          response:
+            200:
+              body:
+                application/json:
+                  type: object
+                    uri: string
+                    name: string
+                    rules: object[]
+                    publishDate: date
+                    dueDate: date
+      /{policy-id}
+        get: #~10
+          response:
+            200:
+              body:
+                application/json:
+                  type: object
+                    uri: string
+                    name: string
+                    rules: object[]
+                    publishDate: date
+                    dueDate: date
+        put: #~10
+          body:
+            application/x-www-form-urlencoded:
+              formParams:
+                name: string
+                rules: object[]
+                dueDate: date
+          response:
+            200:
+              body:
+                application/json:
+                  type: object
+                    uri: string
+                    name: string
+                    rules: object[]
+                    publishDate: date
+                    dueDate: date
+      /current
+        get: #~10
+          response:
+            200:
+              body:
+                application/json:
+                  type: object
+                    uri: string
+                    name: string
+                    rules: object[]
+
+      

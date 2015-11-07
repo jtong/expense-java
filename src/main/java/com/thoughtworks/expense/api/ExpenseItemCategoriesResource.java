@@ -5,6 +5,7 @@ import com.thoughtworks.expense.core.ExpenseItemCategoryRepository;
 
 import javax.inject.Inject;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
@@ -31,6 +32,23 @@ public class ExpenseItemCategoriesResource {
             result.add(categoryBean);
         }
         
+        return result;
+    }
+    
+    @Path("/")
+    @POST
+    @Produces(MediaType.APPLICATION_JSON)
+    public Map create(){
+        Map result = new HashMap();
+        ExpenseItemCategory newInstance = expenseItemCategoryRepository.newExpenseItemCategory();
+
+        newInstance = expenseItemCategoryRepository.createExpenseItemCategory(newInstance);
+
+        result.put("uri", "/expenseItemCategories/" + newInstance.getId());
+        result.put("id", newInstance.getId());
+        result.put("name",newInstance.getName());
+
+
         return result;
     }
 }

@@ -1,0 +1,300 @@
+/users
+  get: #~15|40，主要问题在于想小步走，只mock，没写when，想先跑通，却把实现写了，结果因此报了一个特别奇怪的错误。还是要严格按步骤走，先空数据的状态码，然后再加入逻辑
+    reponse:
+      200:
+        body:
+          application/json:
+            type: object[]
+              uri: string
+              id: number
+              name: string
+  post: #~15| 39 spike了20分钟才把参数传到后面……又15分钟才想到userRepository new instance，才能做到mock与真是用例等价
+    body:
+      application/x-www-form-urlencoded:
+        formParams:
+          name: string
+    reponse:
+      200:
+        body:
+          application/json:
+            type: object
+              uri: string
+              id: number
+              name: string
+  /{user-id}
+    get: #~10|6:03
+      response:
+        200:
+          body:
+            application/json:
+              type: object
+                uri: string
+                id: string
+    /expense-requests
+      get: #~10| 33 mock太难写， 大量的时间在写mock
+        response:
+          200:
+            body:
+              application/json:
+                type: object[]
+                  uri: string
+                  requester: object
+                    uri: string
+                    name: string
+                  approver: object
+                    uri: string
+                    name: string
+                  amount: number
+                  requestDate: date
+      post: #~10|13:09 没有按照标准的TDD的思路来写，所以速度莫名的慢了
+        body:
+          application/x-www-form-urlencoded:
+            formParams:
+              name: string
+        response:
+          200:
+            body:
+              application/json:
+                type: object
+                  uri: string
+                  requester: object
+                    uri: string
+                    name: string
+                  amount: number
+      /{expense-request-id}
+        get: #~10| 6:13 只写了接口，JSON里的很多数据都没填
+          response:
+            200:
+              body:
+                application/json:
+                  type: object
+                    uri: string
+                    requester: object
+                      uri: string
+                      name: string
+                    approver: object
+                      uri: string
+                      name: string
+                    amount: number
+                    status: string
+                    dateRequested: date
+                    dateApproved: date
+        put: #~10| 14:42 主要是在mock的时候花了时间
+          body:
+            application/x-www-form-urlencoded:
+              formParams:
+                name: string
+                approverId: string
+                status: string
+          response:
+            200:
+              body:
+                application/json:
+                  type: object
+                    uri: string
+                    requester: object
+                      uri: string
+                      name: string
+                    approver: object
+                      uri: string
+                      name: string
+                    amount: number
+                    status: string
+                    dateRequested: date
+                    dateApproved: date
+        /expense-items
+          get: #~10| 24, 修BUG4分钟，6分钟写mock，第一个访问 2分钟，
+            response:
+              200:
+                body:
+                  application/json:
+                    type: object[]
+                      uri: string
+                      amount: number
+                      category: object
+                        uri: string
+                        name: string
+                        comment: string
+
+          post: #~10| 13:26 其中2分钟写第一个测试，只为了测url存在（所以必须模板化），
+            body:
+              application/x-www-form-urlencoded:
+                formParams:
+                  amount: number
+                  categoryId: string
+                  comment: string
+            response:
+              200:
+                body:
+                  application/json:
+                    type: object
+                      uri: string
+                      amount: number
+                      category: object
+                        uri: string
+                        name: string
+                      comment: string
+          /{expense-items-id}
+            get: #~10| 7:43 使用了模板之后速度确有提升，但是感觉不对，不知道做完没有，有点心慌，只能先做着
+              response:
+                200:
+                  body:
+                    application/json:
+                      type: object
+                        uri: string
+                        amount: number
+                        category: object
+                          uri: string
+                          name: string
+                        comment: string
+            put: #~10| 11:49 速度还凑付，主要是update的mock这块还待提升
+              body:
+                application/x-www-form-urlencoded:
+                  formParams:
+                    amount: number
+                    categoryId: string
+                    comment: string
+              response:
+                200:
+                  body:
+                    application/json:
+                      type: object
+                        uri: string
+                        amount: number
+                        category: object
+                          uri: string
+                          name: string
+                        comment: string
+        /payment
+          get: #~10| 13:54 因为不是典型的list，所以做的有点慢
+            response:
+              200:
+                body:
+                  application/json:
+                    type: object
+                      uri: string
+                      account: string
+                      amount: number
+          post: #~10| 5:13 已经自暴自弃不写formData了……这速度算是真正的速度吗？
+            body:
+              application/x-www-form-urlencoded:
+                formParams:
+                  account: string
+            response:
+              200:
+                body:
+                  application/json:
+                    type: object
+                      uri: string
+                      account: string
+                      amount: number
+
+/expense-item-categories
+  get: #~10| 15:48  建立Root Resource和RootRepository有点慢, 写mock花了5分钟
+    resposne:
+      200:
+        body:
+          application/json:
+            type: object[]
+              uri: string
+              name: string
+  post: #~10| 6:36 模板还是起作用了
+    body:
+      application/x-www-form-urlencoded:
+        formParams:
+          name: string
+    resposne:
+      200:
+        body:
+          application/json:
+            type: object
+              uri: string
+              id: string
+              name: string
+  /{expense-item-category-id}
+      get: #~10| 4:20 还算快，主要是参数简单
+        resposne:
+          200:
+            body:
+              application/json:
+                type: object
+                  uri: string
+                  name: string
+      put: #~10| 5 不用思考提交的参数真的很快，但是这似乎不正确
+        body:
+          application/x-www-form-urlencoded:
+            formParams:
+              name: string
+        response:
+          200:
+            body:
+              application/json:
+                type: object
+                  uri: string
+                  name: string
+    /policies
+        get: #~10| 17:52 新测试居然用了8分钟
+          response:
+            200:
+              body:
+                application/json:
+                  type: object[]
+                    uri: string
+                    name: string
+        post: #~10| 6:22 如果不复杂的话，一个简单的api平均也得7分钟啊
+          body:
+            application/x-www-form-urlencoded:
+              formParams:
+                name: string
+                rules: object[]
+          response:
+            200:
+              body:
+                application/json:
+                  type: object
+                    uri: string
+                    name: string
+                    rules: object[]
+                    publishDate: date
+                    dueDate: date
+      /{policy-id}
+        get: #~10| 8:22
+          response:
+            200:
+              body:
+                application/json:
+                  type: object
+                    uri: string
+                    name: string
+                    rules: object[]
+                    publishDate: date
+                    dueDate: date
+        put: #~10| 4:53 rules没修改，参数没传
+          body:
+            application/x-www-form-urlencoded:
+              formParams:
+                name: string
+                rules: object[]
+                dueDate: date
+          response:
+            200:
+              body:
+                application/json:
+                  type: object
+                    uri: string
+                    name: string
+                    rules: object[]
+                    publishDate: date
+                    dueDate: date
+      /current
+        get: #~10| 5:55 这么看来，如果善加训练，复杂数去到10分钟以内不是不可能
+          response:
+            200:
+              body:
+                application/json:
+                  type: object
+                    uri: string
+                    name: string
+                    rules: object[]
+
+      
